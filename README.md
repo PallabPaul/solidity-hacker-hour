@@ -1,1 +1,0 @@
-# solidity-hacker-hour

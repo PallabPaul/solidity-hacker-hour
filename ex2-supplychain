@@ -1,0 +1,49 @@
+pragma solidity ^0.4.8;
+
+contract supplyChain {
+    
+    address private supplierID = <address generated on remix>;
+    address private verifierID = <address generated on remix>;
+    
+    string public messages;
+    bool supplierAddItem = false;
+    bool verifierAddItem = false;
+    int itemCount = 0;
+    
+    modifier onlySupplier {
+        if(supplierID != msg.sender) {
+            revert();
+        } else {
+            _;
+        }
+    }
+
+    modifier onlyVerifier {
+        if(verifierID != msg.sender) {
+            revert();
+        } else {
+            _;
+        }
+    }
+    
+    function addItem() public onlySupplier {
+        messages = 'Supplier wants to add an item';
+        supplierAddItem = true;
+    }
+
+
+    function verify(bool verifyAddItem) public onlyVerifier{
+        if((supplierAddItem == true) && (verifyAddItem == true)){
+        itemCount++;
+        messages = 'Item has been verfied and added';
+        supplierAddItem = false;
+        } else {
+            messages = 'Item has been declined';
+            supplierAddItem = false;
+        }
+    }
+    
+    function viewItemCount() public view returns(int) {
+        return (itemCount);
+    }
+}
